@@ -98,6 +98,7 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [users, setUsers] = useState<User[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const router = useRouter();
 
   const handleLogin = async () => {
@@ -165,7 +166,7 @@ export default function Login() {
     }
   };
 
-  if (!isLoggedIn) {
+  if (isLoggedIn == false) {
     return (
       <Container>
         <LoginForm>
@@ -188,25 +189,26 @@ export default function Login() {
       </Container>
     );
   }
-
-  return (
-    <Container>
-      <UserListContainer>
-        <h2>User List</h2>
-        <Button onClick={() => router.push('/user-create')}>Add User</Button>
-        <ul>
-          {users.map((user) => (
-            <UserItem key={user.id}>
-              <span>{user.username} - {user.email}</span>
-              <div>
-                <ActionButton onClick={() => handleEdit(user.id)}>Edit</ActionButton>
-                <ActionButton onClick={() => handleDelete(user.id)}>Delete</ActionButton>
-              </div>
-            </UserItem>
-          ))}
-        </ul>
-        <ToastContainer />
-      </UserListContainer>
-    </Container>
-  );
+  else   {
+    return (
+      <Container>
+        <UserListContainer>
+          <h2>User List</h2>
+          <Button onClick={() => router.push('/user-create')}>Add User</Button>
+          <ul>
+            {users.map((user) => (
+              <UserItem key={user.id}>
+                <span>{user.username} - {user.email}</span>
+                <div>
+                  <ActionButton onClick={() => handleEdit(user.id)}>Edit</ActionButton>
+                  <ActionButton onClick={() => handleDelete(user.id)}>Delete</ActionButton>
+                </div>
+              </UserItem>
+            ))}
+          </ul>
+          <ToastContainer />
+        </UserListContainer>
+      </Container>
+    );
+  } 
 }

@@ -13,7 +13,7 @@ export default function UserEdit() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get(`YOUR_API_URL_HERE/${id}`, {
+        const response = await axios.get(`http://iottechgroup.dyndns.biz:18180/api/user/user//${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -34,7 +34,7 @@ export default function UserEdit() {
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.put(`YOUR_API_URL_HERE/${id}`, { name, email }, {
+      await axios.put(`http://iottechgroup.dyndns.biz:18180/api/token//${id}`, { name, email }, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
