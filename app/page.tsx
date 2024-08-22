@@ -20,6 +20,7 @@ const Container = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100vh;
   background-color: #f0f2f5;
 `;
@@ -56,37 +57,50 @@ const Button = styled.button`
 `;
 
 const UserListContainer = styled.div`
+  width: 80%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
   padding: 20px;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 `;
 
-const UserItem = styled.li`
+const UserCard = styled.div`
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   display: flex;
-  justify-content: space-between;
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  &:last-child {
-    border-bottom: none;
-  }
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+`;
+
+const UserName = styled.h3`
+  margin: 10px 0;
+`;
+
+const UserEmail = styled.p`
+  margin: 5px 0;
+  color: #555;
 `;
 
 const ActionButton = styled.button`
-  background-color: #28a745;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   padding: 5px 10px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-top: 10px;
 
   &:hover {
-    background-color: #218838;
+    background-color: #0056b3;
   }
 
   &:last-child {
     background-color: #dc3545;
+    margin-left: 10px;
+
     &:hover {
       background-color: #c82333;
     }
@@ -145,9 +159,10 @@ export default function Login() {
     }
   };
 
-  const handleEdit = (userId: number) => {
-    router.push(`/user-edit/${userId}`);
+  const handleEdit = () => {
+    router.push('/user-edit');
   };
+  
 
   const handleDelete = async (userId: number) => {
     try {
@@ -166,7 +181,11 @@ export default function Login() {
     }
   };
 
-  if (isLoggedIn == false) {
+  const handleAddUser = () => {
+    router.push('/user-create'); 
+  };
+
+  if (!isLoggedIn) {
     return (
       <Container>
         <LoginForm>
@@ -188,27 +207,25 @@ export default function Login() {
         </LoginForm>
       </Container>
     );
-  }
-  else   {
+  } else {
     return (
       <Container>
+        <h2>User List</h2>
+        <Button onClick={handleAddUser} style={{ marginBottom: '20px' }}>Add User</Button> {/* เพิ่มปุ่ม Add User */}
         <UserListContainer>
-          <h2>User List</h2>
-          <Button onClick={() => router.push('/user-create')}>Add User</Button>
-          <ul>
-            {users.map((user) => (
-              <UserItem key={user.id}>
-                <span>{user.username} - {user.email}</span>
-                <div>
-                  <ActionButton onClick={() => handleEdit(user.id)}>Edit</ActionButton>
-                  <ActionButton onClick={() => handleDelete(user.id)}>Delete</ActionButton>
-                </div>
-              </UserItem>
-            ))}
-          </ul>
-          <ToastContainer />
+          {users.map((user) => (
+            <UserCard key={user.id}>
+              <UserName>{user.first_name} {user.last_name}</UserName>
+              <UserEmail>{user.email}</UserEmail>
+              <div>
+              <ActionButton onClick={handleEdit}>Edit</ActionButton>
+                <ActionButton onClick={() => handleDelete(user.id)}>Delete</ActionButton>
+              </div>
+            </UserCard>
+          ))}
         </UserListContainer>
+        <ToastContainer />
       </Container>
     );
-  } 
+  }
 }
